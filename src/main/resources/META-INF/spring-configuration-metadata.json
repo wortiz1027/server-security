@@ -1,0 +1,38 @@
+{
+  "hints": [],
+  "groups": [
+    {
+      "sourceType": "co.edu.javeriana.servers.security.config.SecurityProperties",
+      "name": "security",
+      "type": "co.edu.javeriana.servers.security.config.SecurityProperties"
+    },
+    {
+      "sourceType": "co.edu.javeriana.servers.security.config.SecurityProperties",
+      "name": "security.jwt",
+      "sourceMethod": "getJwt()",
+      "type": "co.edu.javeriana.servers.security.config.SecurityProperties$JwtProperties"
+    }
+  ],
+  "properties": [
+    {
+      "sourceType": "co.edu.javeriana.servers.security.config.SecurityProperties$JwtProperties",
+      "name": "security.jwt.key-pair-alias",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "co.edu.javeriana.servers.security.config.SecurityProperties$JwtProperties",
+      "name": "security.jwt.key-pair-password",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "co.edu.javeriana.servers.security.config.SecurityProperties$JwtProperties",
+      "name": "security.jwt.key-store",
+      "type": "org.springframework.core.io.Resource"
+    },
+    {
+      "sourceType": "co.edu.javeriana.servers.security.config.SecurityProperties$JwtProperties",
+      "name": "security.jwt.key-store-password",
+      "type": "java.lang.String"
+    }
+  ]
+}
