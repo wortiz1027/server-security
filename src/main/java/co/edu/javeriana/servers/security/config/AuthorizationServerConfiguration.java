@@ -1,5 +1,7 @@
 package co.edu.javeriana.servers.security.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,8 +17,8 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
-import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
 
 import javax.sql.DataSource;
@@ -28,31 +30,35 @@ import java.security.KeyPair;
 @EnableConfigurationProperties(SecurityProperties.class)
 public class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
 
-    private final DataSource dataSource;
-    private final PasswordEncoder passwordEncoder;
-    private final AuthenticationManager authenticationManager;
-    private final SecurityProperties securityProperties;
-    private final UserDetailsService userDetailsService;
+    @Autowired
+    @Qualifier("authenticationManagerBean")
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private DataSource dataSource;
+
+    @Autowired
+    @Qualifier("customClientDetailsService")
+    private ClientDetailsService clientDetailService;
+
+    @Autowired
+    @Qualifier("customUserDetailsService")
+    private UserDetailsService userDetailsService;
+
+    @Autowired
+    @Qualifier("customPasswordEncoder")
+    private PasswordEncoder passwordEncoder;
 
     private JwtAccessTokenConverter jwtAccessTokenConverter;
-    private TokenStore tokenStore;
+
+    private final SecurityProperties securityProperties;
 
     public AuthorizationServerConfiguration(final DataSource dataSource, final PasswordEncoder passwordEncoder,
-                                            final AuthenticationManager authenticationManager, final SecurityProperties securityProperties,
-                                            final UserDetailsService userDetailsService) {
+                                            final AuthenticationManager authenticationManager, final SecurityProperties securityProperties) {
         this.dataSource = dataSource;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.securityProperties = securityProperties;
-        this.userDetailsService = userDetailsService;
-    }
-
-    @Bean
-    public TokenStore tokenStore() {
-        if (tokenStore == null) {
-            tokenStore = new JwtTokenStore(jwtAccessTokenConverter());
-        }
-        return tokenStore;
     }
 
     @Bean
@@ -83,6 +89,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     @Override
     public void configure(final ClientDetailsServiceConfigurer clients) throws Exception {
         clients.jdbc(this.dataSource);
+        clients.withClientDetails(clientDetailService);
     }
 
     @Override
@@ -99,6 +106,11 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
                    .tokenKeyAccess("permitAll()")
                    .checkTokenAccess("permitAll()")
                 .allowFormAuthenticationForClients();
+    }
+
+    @Bean
+    public TokenStore tokenStore() {
+        return new JdbcTokenStore(this.dataSource);
     }
 
     private KeyPair keyPair(SecurityProperties.JwtProperties jwtProperties, KeyStoreKeyFactory keyStoreKeyFactory) {

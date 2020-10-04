@@ -4,7 +4,16 @@
 spring:
   application:
     name: server-security
-  cloud:
-    config:
-      uri:  ${CONFIG_SERVER:http://localhost:9090}  #where the config-service is running
-      fail-fast: true             #the service will not run if it can't reach the config-service
+
+eureka:
+  instance:
+    hostname: discovery-server
+  client:
+    region: default
+    service-url:
+      defaultZone: ${EUREKA_SERVER:http://localhost:9091/eureka}
+    registry-fetch-interval-seconds: 5
+#  cloud:
+#    config:
+#      uri:  ${CONFIG_SERVER:http://localhost:9090}  #where the config-service is running
+#      fail-fast: true             #the service will not run if it can't reach the config-service

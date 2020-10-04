@@ -1,0 +1,56 @@
+# -------------------------------------------------------------------
+# - DOCKER COMPOSE FILE
+# - AUTOR: Equipo 5
+# - FECHA: 03-Octubre-2020
+# - DESCRIPCION: Docker compose file que permite la
+# -              creacion de 2 contendores uno para la aplicacion
+# -              y otro para la base de datos de la app de seguridad
+# -------------------------------------------------------------------
+
+version: '3.7'
+services:
+  db_security:
+    image: mysql:5.7.31
+    container_name: db_security
+    hostname: db_security
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 'mysql'
+      MYSQL_DATABASE: 'securitydb'
+      MYSQL_USER: 'security'
+      MYSQL_PASSWORD: 'security2020++'
+      MYSQL_ROOT_HOST: '%'
+    ports:
+      - '3306:3306'
+    volumes:
+      - ./src/main/resources/databases/mysql/mysql-security-schema-v0.1.sql:/docker-entrypoint-initdb.d/mysql-security-schema-v0.1.sql
+      - data_security:/var/lib/mysql
+    networks:
+      - backend
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping https://linuxize.com/post/how-to-remove-docker-images-containers-volumes-and-networks/", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+  #security-service:
+  #  image: security-service:latest
+  #  container_name: security-service
+  #  hostname: security-service
+  #  restart: always
+  #  ports:
+  #    - 8081:8081
+  #  networks:
+  #    - backend
+  #    depends_on:
+  #    - db_security
+  #  environment:
+  #    - SERVICE_PORTS=8081
+  #    - DATABASE_HOST=db_cotizaciones
+  #    - DATABASE_USER=cotizaciones
+  #    - DATABASE_PASSWORD=cotizaciones2020++
+  #    - DATABASE_NAME=cotizacionesdb
+  #    - DATABASE_PORT=3306
+volumes:
+  data_security:
+networks:
+  backend:
+    external: true
