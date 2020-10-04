@@ -32,10 +32,10 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 
     @Autowired
     @Qualifier("authenticationManagerBean")
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
     @Autowired
-    private DataSource dataSource;
+    private final DataSource dataSource;
 
     @Autowired
     @Qualifier("customClientDetailsService")
@@ -47,7 +47,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 
     @Autowired
     @Qualifier("customPasswordEncoder")
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     private JwtAccessTokenConverter jwtAccessTokenConverter;
 
@@ -95,9 +95,9 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     @Override
     public void configure(final AuthorizationServerEndpointsConfigurer endpoints) {
         endpoints.authenticationManager(this.authenticationManager)
-                .accessTokenConverter(jwtAccessTokenConverter())
-                .userDetailsService(this.userDetailsService)
-                .tokenStore(tokenStore());
+                 .accessTokenConverter(jwtAccessTokenConverter())
+                 .userDetailsService(this.userDetailsService)
+                 .tokenStore(tokenStore());
     }
 
     @Override
@@ -105,7 +105,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
         oauthServer.passwordEncoder(this.passwordEncoder)
                    .tokenKeyAccess("permitAll()")
                    .checkTokenAccess("permitAll()")
-                .allowFormAuthenticationForClients();
+                   .allowFormAuthenticationForClients();
     }
 
     @Bean

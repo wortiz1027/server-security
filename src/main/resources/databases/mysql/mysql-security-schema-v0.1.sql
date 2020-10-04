@@ -238,10 +238,10 @@ START TRANSACTION;
 USE `securitydb`;
 -- client_secret = 9430fd38-05b3-11eb-a999-c7e4bb44a691 = $2a$10$ZOrcCjbHPmkMWieuAbRxSevlh5ojSW7WgYacwhl4bSvlfyTatywQK
 INSERT INTO `securitydb`.`oauth_client_details` (`client_id`, `resource_id`, `client_secret`, `scope`, `authorized_grant_types`, `web_server_redirect_uri`, `authorities`, `access_token_validity`, `refresh_token_validity`, `additional_information`, `autoapprove`)
-VALUES ('5258f2f8-05b3-11eb-96f5-9f4a2df3ac0e', 'b2c', '$2a$10$ZOrcCjbHPmkMWieuAbRxSevlh5ojSW7WgYacwhl4bSvlfyTatywQK', 'read,write', 'password,refresh_token,client_credentials', 'http://localhost:8086/MicroServices/', 'USER', 300, 600, '', 'false');
+VALUES ('5258f2f8-05b3-11eb-96f5-9f4a2df3ac0e', 'oauth/pica', '$2a$10$ZOrcCjbHPmkMWieuAbRxSevlh5ojSW7WgYacwhl4bSvlfyTatywQK', 'read,write', 'password,refresh_token,client_credentials', 'http://localhost:8086/MicroServices/', 'USER', 300, 600, '', 'false');
 
 -- client_secret = c5aad3de-05b3-11eb-b5df-37ffdf85ceb0 = $2a$10$ZkiHduuF6fdRwpCSUyY/4um5AawbWC9M2ff4r49GyKr3ARAB1qAQO
 INSERT INTO `securitydb`.`oauth_client_details` (`client_id`, `resource_id`, `client_secret`, `scope`, `authorized_grant_types`, `web_server_redirect_uri`, `authorities`, `access_token_validity`, `refresh_token_validity`, `additional_information`, `autoapprove`)
-VALUES ('c2d81e6e-05b3-11eb-bc37-c39255d6522d', 'oms', '$2a$10$ZkiHduuF6fdRwpCSUyY/4um5AawbWC9M2ff4r49GyKr3ARAB1qAQO', 'read,write', 'password,refresh_token,client_credentials', 'http://localhost:8086/MicroServices/', 'USER', 300, 600, '', 'false');
+VALUES ('c2d81e6e-05b3-11eb-bc37-c39255d6522d', 'oauth/pica', '$2a$10$ZkiHduuF6fdRwpCSUyY/4um5AawbWC9M2ff4r49GyKr3ARAB1qAQO', 'read,write', 'password,refresh_token,client_credentials', 'http://localhost:8086/MicroServices/', 'USER', 300, 600, '', 'false');
 
 COMMIT;

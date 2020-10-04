@@ -2,10 +2,10 @@ package co.edu.javeriana.servers.security.service;
 
 import co.edu.javeriana.servers.security.model.Roles;
 import co.edu.javeriana.servers.security.model.Users;
+import co.edu.javeriana.servers.security.model.save.Request;
 import co.edu.javeriana.servers.security.repository.UsersRepository;
 import co.edu.javeriana.servers.security.util.Constants;
 import co.edu.javeriana.servers.security.util.InfoLogger;
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,9 +21,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.ZoneId;
 import java.util.*;
 
-//@RequiredArgsConstructor
 @Service("customUserDetailsService")
 public class CustomUserDetailServices implements UserDetailsService, UsersServicesDao {
 
@@ -37,11 +37,51 @@ public class CustomUserDetailServices implements UserDetailsService, UsersServic
     private PasswordEncoder passwordEncoder;
 
     @Override
-    @Transactional(readOnly = false)
-    public void createUser(Users u, List<Roles> roles) {
-        u.setPassword(passwordEncoder.encode(u.getPassword()));
-        u.setRoles(roles);
-        repository.save(u);
+    @Transactional
+    public boolean createUser(Request data) {
+        try {
+            Users user = new Users();
+            List<Roles> roles = new ArrayList<>();
+
+            buildUserRow(data, user, roles);
+
+            repository.save(user);
+        } catch (Exception e) {
+            return Boolean.FALSE;
+        }
+
+        return Boolean.TRUE;
+    }
+
+    private void buildUserRow(Request data, Users user, List<Roles> roles) {
+
+        Date date = java.util.Date.from(data.getFechaNacimiento()
+                                            .atStartOfDay()
+                                            .atZone(ZoneId.systemDefault())
+                                            .toInstant());
+
+        data.getRoles().forEach(item -> {
+            Roles rol = new Roles();
+            rol.setIdRole(item.getIdRole());
+            rol.setRole(item.getRole());
+            roles.add(rol);
+        });
+
+        user.setIdUser(data.getCodigo());
+        user.setCedula(data.getCedula());
+        user.setNombre(data.getNombres());
+        user.setApellido(data.getApellidos());
+        user.setDireccion(data.getDireccion());
+        user.setFechaNacimiento(date);
+        user.setTelefono(data.getTelefono());
+        user.setEmail(data.getEmail());
+        user.setUsername(data.getUsername());
+        user.setPassword(passwordEncoder.encode(data.getPassword()));
+        user.setEnable(data.getEnable());
+        user.setAccountNonExpired(data.getAccountNonExpired());
+        user.setCredentialNonExpired(data.getCredentialNonExpired());
+        user.setAccountNonLocket(data.getAccountNonLocket());
+        user.setRoles(roles);
     }
 
     @Override
@@ -57,14 +97,14 @@ public class CustomUserDetailServices implements UserDetailsService, UsersServic
     }
 
     @Override
-    @Transactional(readOnly = false)
+    @Transactional
     public Users update(Users u) {
         repository.saveAndFlush(u);
         return u;
     }
 
     @Override
-    @Transactional(readOnly = false)
+    @Transactional
     public void delete(Users u) {
         //repository.delete(u.getIdUser());
     }
@@ -77,14 +117,15 @@ public class CustomUserDetailServices implements UserDetailsService, UsersServic
 
         if (user == null)
             throw new UsernameNotFoundException(String.format(Constants.MSG_ERROR_USUARIO_NO_REGISTRADO, username));
+
         logger.debug("Usuario : " + username);
         return new User(user.getUsername(),
-                user.getPassword(),
-                Boolean.valueOf(user.getEnable()),
-                Boolean.valueOf(user.getAccountNonExpired()),
-                Boolean.valueOf(user.getCredentialNonExpired()),
-                Boolean.valueOf(user.getAccountNonLocket()),
-                getAuthorities(user.getRoles()));
+                        user.getPassword(),
+                        Boolean.valueOf(user.getEnable()),
+                        Boolean.valueOf(user.getAccountNonExpired()),
+                        Boolean.valueOf(user.getCredentialNonExpired()),
+                        Boolean.valueOf(user.getAccountNonLocket()),
+                        getAuthorities(user.getRoles()));
     }
 
     @InfoLogger(origen = "getAuthorities")

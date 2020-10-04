@@ -1,13 +1,11 @@
 package co.edu.javeriana.servers.security.service;
 
-import co.edu.javeriana.servers.security.model.Roles;
 import co.edu.javeriana.servers.security.model.Users;
-
-import java.util.List;
+import co.edu.javeriana.servers.security.model.save.Request;
 
 public interface UsersServicesDao {
 
-    void createUser(Users u, List<Roles> role);
+    boolean createUser(Request data);
 
     boolean isUserAvailable(String username);
 
