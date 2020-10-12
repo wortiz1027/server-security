@@ -35,7 +35,7 @@ public class CustomClientDetailService implements ClientDetailsService, ClientSe
     @InfoLogger(origen = "loadClientByClientId")
     public ClientDetails loadClientByClientId(String clientId) throws ClientRegistrationException {
 
-        if (repository.isClientAvailable(clientId) == 0){
+        if (repository.isClientAvailable(clientId) == 0) {
             throw new ClientRegistrationException(String.format(Constants.MSG_ERROR_CLIENTE_NO_REGISTRADO, clientId));
         }
 
@@ -47,7 +47,7 @@ public class CustomClientDetailService implements ClientDetailsService, ClientSe
 
         List<GrantedAuthority> authoritiesList = new ArrayList<GrantedAuthority>();
 
-        for (String s : authorities){
+        for (String s : authorities) {
             authoritiesList.add(new SimpleGrantedAuthority(s));
         }
 
@@ -70,7 +70,7 @@ public class CustomClientDetailService implements ClientDetailsService, ClientSe
 
         String approve = client.getAutoapprove() == null ? "false" : "true";
 
-        if(approve.equalsIgnoreCase("true"))
+        if (approve.equalsIgnoreCase("true"))
             clientDetails.setAutoApproveScopes(StringUtils.commaDelimitedListToSet(client.getAutoapprove()));
         else
             clientDetails.setAutoApproveScopes(new HashSet<String>());
@@ -81,7 +81,7 @@ public class CustomClientDetailService implements ClientDetailsService, ClientSe
     @Override
     @Transactional(readOnly = false)
     public void createClient(OauthClientDetails client) {
-        if (client != null){
+        if (client != null) {
             repository.save(client);
         }
     }
@@ -89,7 +89,7 @@ public class CustomClientDetailService implements ClientDetailsService, ClientSe
     @Override
     @Transactional(readOnly = true)
     public boolean isUserAvailable(String clientId) {
-        if (clientId != null){
+        if (clientId != null) {
             repository.isClientAvailable(clientId);
         }
 
@@ -102,7 +102,7 @@ public class CustomClientDetailService implements ClientDetailsService, ClientSe
 
         OauthClientDetails client = null;
 
-        if (!clientId.equalsIgnoreCase("")){
+        if (!clientId.equalsIgnoreCase("")) {
             client = repository.loadClientById(clientId);
         }
 

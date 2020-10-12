@@ -7,8 +7,11 @@ import java.util.List;
 public interface RoleServicesDao {
 
     List<Roles> getAllRoles();
+
     Roles getInfoRole();
+
     void deleteRole();
+
     void updateRole();
 
 }

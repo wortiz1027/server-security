@@ -56,9 +56,9 @@ public class CustomUserDetailServices implements UserDetailsService, UsersServic
     private void buildUserRow(Request data, Users user, List<Roles> roles) {
 
         Date date = java.util.Date.from(data.getFechaNacimiento()
-                                            .atStartOfDay()
-                                            .atZone(ZoneId.systemDefault())
-                                            .toInstant());
+                .atStartOfDay()
+                .atZone(ZoneId.systemDefault())
+                .toInstant());
 
         data.getRoles().forEach(item -> {
             Roles rol = new Roles();
@@ -120,12 +120,12 @@ public class CustomUserDetailServices implements UserDetailsService, UsersServic
 
         logger.debug("Usuario : " + username);
         return new User(user.getUsername(),
-                        user.getPassword(),
-                        Boolean.valueOf(user.getEnable()),
-                        Boolean.valueOf(user.getAccountNonExpired()),
-                        Boolean.valueOf(user.getCredentialNonExpired()),
-                        Boolean.valueOf(user.getAccountNonLocket()),
-                        getAuthorities(user.getRoles()));
+                user.getPassword(),
+                Boolean.valueOf(user.getEnable()),
+                Boolean.valueOf(user.getAccountNonExpired()),
+                Boolean.valueOf(user.getCredentialNonExpired()),
+                Boolean.valueOf(user.getAccountNonLocket()),
+                getAuthorities(user.getRoles()));
     }
 
     @InfoLogger(origen = "getAuthorities")

@@ -19,6 +19,7 @@ import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
 
 import javax.sql.DataSource;
@@ -69,6 +70,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
         tokenServices.setTokenStore(tokenStore);
         tokenServices.setClientDetailsService(clientDetailsService);
         tokenServices.setAuthenticationManager(this.authenticationManager);
+        tokenServices.setSupportRefreshToken(Boolean.TRUE);
         return tokenServices;
     }
 
@@ -95,22 +97,24 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     @Override
     public void configure(final AuthorizationServerEndpointsConfigurer endpoints) {
         endpoints.authenticationManager(this.authenticationManager)
-                 .accessTokenConverter(jwtAccessTokenConverter())
-                 .userDetailsService(this.userDetailsService)
-                 .tokenStore(tokenStore());
+                .reuseRefreshTokens(Boolean.FALSE)
+                .accessTokenConverter(jwtAccessTokenConverter())
+                .userDetailsService(this.userDetailsService)
+                .tokenStore(tokenStore());
     }
 
     @Override
     public void configure(final AuthorizationServerSecurityConfigurer oauthServer) {
         oauthServer.passwordEncoder(this.passwordEncoder)
-                   .tokenKeyAccess("permitAll()")
-                   .checkTokenAccess("permitAll()")
-                   .allowFormAuthenticationForClients();
+                .tokenKeyAccess("permitAll()")
+                .checkTokenAccess("permitAll()")
+                .allowFormAuthenticationForClients();
     }
 
     @Bean
     public TokenStore tokenStore() {
-        return new JdbcTokenStore(this.dataSource);
+        return new JwtTokenStore(jwtAccessTokenConverter());
+        //return new JdbcTokenStore(this.dataSource);
     }
 
     private KeyPair keyPair(SecurityProperties.JwtProperties jwtProperties, KeyStoreKeyFactory keyStoreKeyFactory) {

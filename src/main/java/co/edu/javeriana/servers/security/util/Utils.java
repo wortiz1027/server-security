@@ -10,7 +10,7 @@ public class Utils {
 
     public static void main(String[] args) {
         SecureRandom random = null;
-        String clientId = "c5aad3de-05b3-11eb-b5df-37ffdf85ceb0";
+        String clientId = "c56eceb0-88f7-4b41-a495-dc8c92e0f449";
 
         try {
             random = SecureRandom.getInstance("SHA1PRNG");
