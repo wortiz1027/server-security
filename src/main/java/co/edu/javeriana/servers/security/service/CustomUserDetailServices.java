@@ -88,6 +88,14 @@ public class CustomUserDetailServices implements UserDetailsService, UsersServic
         user.setCredentialNonExpired(data.getCredentialNonExpired());
         user.setAccountNonLocket(data.getAccountNonLocket());
         user.setRoles(roles);
+
+        Types type = new Types();
+        type.setType(data.getTypes().getType());
+        type.setCode(data.getTypes().getCode());
+        type.setDescription(data.getTypes().getDescription());
+
+        user.setTypes(type);
+
     }
 
     @Override

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("security/api/v1")
+@RequestMapping("registry/api/v1")
 @RequiredArgsConstructor
 public class UserRegistryController {
 
@@ -41,9 +41,10 @@ public class UserRegistryController {
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
 
-        status.setCode(StatusCode.NO_EXIST.name());
-        status.setDescription(String.format("User %s%s has been created!", data.getUsername()));
+        status.setCode(StatusCode.SUCCESS.name());
+        status.setDescription(String.format("User %s has been created!", data.getUsername()));
         response.setStatus(status);
+        response.setUser(data);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 

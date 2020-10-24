@@ -1,6 +1,5 @@
 package co.edu.javeriana.servers.security.model.save;
 
-import co.edu.javeriana.servers.security.model.dtos.UserDto;
 import lombok.Data;
 
 @Data
