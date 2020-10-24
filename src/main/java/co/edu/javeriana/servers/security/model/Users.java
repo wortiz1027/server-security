@@ -1,11 +1,11 @@
 package co.edu.javeriana.servers.security.model;
 
 import lombok.Data;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
@@ -87,5 +87,9 @@ public class Users implements java.io.Serializable {
 
     @ManyToMany(mappedBy = "userList", fetch = FetchType.LAZY)
     private List<Roles> roles;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_type", updatable = false, nullable = false)
+    private Types types;
 
 }

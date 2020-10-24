@@ -1,7 +1,11 @@
 package co.edu.javeriana.servers.security.service;
 
 import co.edu.javeriana.servers.security.model.Users;
+import co.edu.javeriana.servers.security.model.dtos.UserDto;
 import co.edu.javeriana.servers.security.model.save.Request;
+import org.springframework.data.domain.Pageable;
+
+import java.util.Map;
 
 public interface UsersServicesDao {
 
@@ -9,9 +13,11 @@ public interface UsersServicesDao {
 
     boolean isUserAvailable(String username);
 
-    Users getUserByUsername(String username);
+    Map<String, Object> getUsers(Pageable paging);
 
-    Users update(Users u);
+    UserDto getUserByUsername(String username);
+
+    Request update(Request data);
 
     void delete(Users u);
 
