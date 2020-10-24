@@ -1,6 +1,7 @@
 package co.edu.javeriana.servers.security.service;
 
 import co.edu.javeriana.servers.security.model.Roles;
+import co.edu.javeriana.servers.security.model.Types;
 import co.edu.javeriana.servers.security.model.Users;
 import co.edu.javeriana.servers.security.model.dtos.RolesDto;
 import co.edu.javeriana.servers.security.model.dtos.TypesDto;
@@ -24,7 +25,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZoneId;
@@ -175,8 +175,6 @@ public class CustomUserDetailServices implements UserDetailsService, UsersServic
             user.setTypes(type);
             List<RolesDto> roles = new ArrayList<>();
 
-            logger.debug("ROLES >>>>>>>>> {}", row.getRoles().size());
-
             for (Roles r : row.getRoles()) {
                 RolesDto rol = new RolesDto();
                 rol.setIdRole(r.getIdRole());
@@ -216,7 +214,24 @@ public class CustomUserDetailServices implements UserDetailsService, UsersServic
         user.setAccountNonExpired(data.getAccountNonExpired());
         user.setCredentialNonExpired(data.getCredentialNonExpired());
         user.setAccountNonLocket(data.getAccountNonLocket());
-        //user.setRoles(roles);
+
+        List<Roles> roles = new ArrayList<>();
+
+        for (RolesDto r : data.getRoles()) {
+            Roles rol = new Roles();
+            rol.setIdRole(r.getIdRole());
+            rol.setRole(r.getRole());
+            roles.add(rol);
+        }
+
+        user.setRoles(roles);
+
+        Types type = new Types();
+        type.setType(data.getTypes().getType());
+        type.setCode(data.getTypes().getCode());
+        type.setDescription(data.getTypes().getDescription());
+
+        user.setTypes(type);
 
         repository.saveAndFlush(user);
         return data;

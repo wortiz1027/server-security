@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RolesDto implements java.io.Serializable {
-    private String idRole;
+    private Long idRole;
     private String role;
 }

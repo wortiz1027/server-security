@@ -1,6 +1,7 @@
 package co.edu.javeriana.servers.security.controller;
 
 import co.edu.javeriana.servers.security.model.Users;
+import co.edu.javeriana.servers.security.model.dtos.UserDto;
 import co.edu.javeriana.servers.security.model.save.Request;
 import co.edu.javeriana.servers.security.model.save.Response;
 import co.edu.javeriana.servers.security.model.save.Status;
@@ -42,6 +43,7 @@ public class UserUpdateController {
         status.setCode(StatusCode.UPDATED.name());
         status.setDescription(String.format("User %s%s has been updated", data.getNombres(), data.getApellidos()));
         response.setStatus(status);
+        response.setUser(u);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 

@@ -7,6 +7,6 @@ import lombok.Data;
 public class Response implements java.io.Serializable {
 
     private Status status;
-    private UserDto u;
+    private Request user;
 
 }

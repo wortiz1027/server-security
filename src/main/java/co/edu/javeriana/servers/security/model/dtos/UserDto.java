@@ -11,7 +11,7 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDto implements java.io.Serializable {
 
-    private String idUser;
+    private Long idUser;
 
     private BigInteger cedula;
     private String nombre;

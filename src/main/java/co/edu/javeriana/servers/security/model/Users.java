@@ -20,7 +20,8 @@ public class Users implements java.io.Serializable {
     @Id
     @NotNull
     @Column(name = "ID_USER")
-    private String idUser;
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private Long idUser;
 
     @Basic(optional = false)
     @NotNull
@@ -89,7 +90,7 @@ public class Users implements java.io.Serializable {
     private List<Roles> roles;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_type", updatable = false, nullable = false)
+    @JoinColumn(name = "user_type", updatable = true, nullable = false)
     private Types types;
 
 }

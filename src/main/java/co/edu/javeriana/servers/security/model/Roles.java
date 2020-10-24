@@ -15,8 +15,9 @@ public class Roles implements java.io.Serializable {
 
     @Id
     @NotNull
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "ID_ROLE")
-    private String idRole;
+    private Long idRole;
 
     @Basic(optional = false)
     @NotNull

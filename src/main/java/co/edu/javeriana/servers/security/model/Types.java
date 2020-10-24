@@ -14,7 +14,8 @@ public class Types {
     @Id
     @NotNull
     @Column(name = "type_id")
-    private String type;
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private Long type;
 
     @Column(name = "type_code")
     private String code;

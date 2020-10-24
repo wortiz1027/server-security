@@ -7,7 +7,7 @@ import lombok.Data;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TypesDto implements java.io.Serializable {
 
-    private String type;
+    private Long type;
     private String code;
     private String description;
 
