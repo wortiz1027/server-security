@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigInteger;
+
 @Repository
 public interface UsersRepository extends JpaRepository<Users, Integer> {
 
@@ -16,6 +18,9 @@ public interface UsersRepository extends JpaRepository<Users, Integer> {
 
     @Query("SELECT u FROM Users u WHERE u.username = :ipUsername")
     Users loadUserByUsername(@Param("ipUsername") String username);
+
+    @Query("SELECT u FROM Users u WHERE u.cedula = :ipCedula")
+    Users loadUserByIdentification(@Param("ipCedula") BigInteger cedula);
 
     Page<Users> findAll(Pageable pageable);
 }

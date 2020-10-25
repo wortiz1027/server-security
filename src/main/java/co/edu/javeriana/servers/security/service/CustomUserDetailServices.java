@@ -27,6 +27,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigInteger;
 import java.time.ZoneId;
 import java.util.*;
 
@@ -159,6 +160,52 @@ public class CustomUserDetailServices implements UserDetailsService, UsersServic
     public UserDto getUserByUsername(String username) {
         try {
             Users row = repository.loadUserByUsername(username);
+
+            UserDto user = new UserDto();
+            user.setIdUser(row.getIdUser());
+            user.setCedula(row.getCedula());
+            user.setNombre(row.getNombre());
+            user.setApellido(row.getApellido());
+            user.setDireccion(row.getDireccion());
+            user.setFechaNacimiento(row.getFechaNacimiento());
+            user.setTelefono(row.getTelefono());
+            user.setEmail(row.getEmail());
+            user.setUsername(row.getUsername());
+            user.setEnable(row.getEnable());
+            user.setAccountNonExpired(row.getAccountNonExpired());
+            user.setCredentialNonExpired(row.getCredentialNonExpired());
+            user.setAccountNonLocket(row.getAccountNonLocket());
+
+            TypesDto type = new TypesDto();
+            type.setType(row.getTypes().getType());
+            type.setCode(row.getTypes().getCode());
+            type.setDescription(row.getTypes().getDescription());
+
+            user.setTypes(type);
+            List<RolesDto> roles = new ArrayList<>();
+
+            for (Roles r : row.getRoles()) {
+                RolesDto rol = new RolesDto();
+                rol.setIdRole(r.getIdRole());
+                rol.setRole(r.getRole());
+                roles.add(rol);
+            }
+
+            user.setRoles(roles);
+            return user;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public UserDto getUserByIdentification(BigInteger cedula) {
+        try {
+            Users row = repository.loadUserByIdentification(cedula);
+
+            logger.debug("NOMBRE_CONSULTA >> {}", row.getNombre());
 
             UserDto user = new UserDto();
             user.setIdUser(row.getIdUser());

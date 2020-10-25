@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigInteger;
 import java.util.Map;
 
 @RestController
@@ -57,4 +58,31 @@ public class UserQueryController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @GetMapping("/users/identifications")
+    public ResponseEntity<Response> all(@RequestParam(required = true) BigInteger cedula) {
+        Response response = new Response();
+        Status status = new Status();
+
+        if (cedula == null) {
+            status.setCode(StatusCode.EMPTY.name());
+            status.setDescription("There is an error, field username can't be empty or null");
+            response.setStatus(status);
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        UserDto user = service.getUserByIdentification(cedula);
+
+        if (user == null) {
+            status.setCode(StatusCode.NO_EXIST.name());
+            status.setDescription(String.format("User with identification %s does not exists!", cedula));
+            response.setStatus(status);
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+
+        status.setCode(StatusCode.SUCCESS.name());
+        status.setDescription(String.format("User with identification %s has information reported!", cedula));
+        response.setStatus(status);
+        response.setUser(user);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }
