@@ -1,6 +1,5 @@
 package co.edu.javeriana.servers.security.controller;
 
-import co.edu.javeriana.servers.security.model.Users;
 import co.edu.javeriana.servers.security.model.dtos.UserDto;
 import co.edu.javeriana.servers.security.model.query.Response;
 import co.edu.javeriana.servers.security.model.save.Status;
