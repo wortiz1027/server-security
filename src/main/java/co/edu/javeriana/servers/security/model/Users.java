@@ -86,7 +86,10 @@ public class Users implements java.io.Serializable {
     @Column(name = "ACCOUNT_NON_LOCKET")
     private String accountNonLocket;
 
-    @ManyToMany(mappedBy = "userList", fetch = FetchType.LAZY)
+    @JoinTable(name = "tbl_sec_user_roles", joinColumns = {
+            @JoinColumn(name = "USER_ID", referencedColumnName = "ID_USER")}, inverseJoinColumns = {
+            @JoinColumn(name = "ROLE_ID", referencedColumnName = "ID_ROLE")})
+    @ManyToMany(cascade=CascadeType.MERGE)
     private List<Roles> roles;
 
     @ManyToOne(fetch = FetchType.LAZY)

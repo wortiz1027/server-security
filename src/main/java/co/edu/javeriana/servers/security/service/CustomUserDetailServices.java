@@ -96,7 +96,6 @@ public class CustomUserDetailServices implements UserDetailsService, UsersServic
         type.setDescription(data.getTypes().getDescription());
 
         user.setTypes(type);
-
     }
 
     @Override

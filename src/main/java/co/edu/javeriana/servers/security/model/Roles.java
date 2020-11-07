@@ -22,13 +22,9 @@ public class Roles implements java.io.Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
-    @Column(name = "ROLE")
     private String role;
 
-    @JoinTable(name = "tbl_sec_user_roles", joinColumns = {
-            @JoinColumn(name = "ROLE_ID", referencedColumnName = "ID_ROLE")}, inverseJoinColumns = {
-            @JoinColumn(name = "USER_ID", referencedColumnName = "ID_USER")})
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "roles")
     private List<Users> userList;
 
 }
