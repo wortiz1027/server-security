@@ -29,9 +29,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
         http.authorizeRequests()
                 .antMatchers("/registry/**").permitAll().and()
                 .authorizeRequests()
-                .antMatchers("/security/**")
-                //.antMatchers("/**")
-                .authenticated();
+                .antMatchers("/security/**").authenticated();
     }
 
     public ResourceServerConfiguration(final TokenStore tokenStore) {
