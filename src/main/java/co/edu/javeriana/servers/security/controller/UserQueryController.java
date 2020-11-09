@@ -76,7 +76,7 @@ public class UserQueryController {
             status.setCode(StatusCode.NO_EXIST.name());
             status.setDescription(String.format("User with identification %s does not exists!", cedula));
             response.setStatus(status);
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
         }
 
         status.setCode(StatusCode.SUCCESS.name());
