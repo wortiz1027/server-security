@@ -6,7 +6,6 @@
 # -              contenedor con el servicio de comandos y queries de productos
 # ------------------------------------------------------------------------------
 
-      - DB_SECURITY_HOST=10.39.1.130
 version: '3.7'
 services:
   server-security-services:
@@ -18,7 +17,9 @@ services:
       - 9050:9050
     environment:
       - CONFIG_SERVER=http://server-configuration-services:9090
-      - DB_SECURITY_HOST=10.39.1.130      
+      - EUREKA_SERVER=http://server-discovery-services:9091/eureka
+      - EUREKA_HOST=10.39.1.85
+      - DB_SECURITY_HOST=10.39.1.130     
     networks:
       - ntw_backend
 networks:
