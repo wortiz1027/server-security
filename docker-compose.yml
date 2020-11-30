@@ -15,6 +15,7 @@ services:
     restart: always
     ports:
       - 9050:9050
+      - 6150:6150
     environment:
       - CONFIG_SERVER=http://server-configuration-services:9090
       - EUREKA_SERVER=http://server-discovery-services:9091/eureka
